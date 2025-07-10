@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Orders</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f7;
+            margin: 0; padding: 0;
+        }
+        h1 {
+            text-align: center;
+            color: #2e7d32;
+            margin: 2rem 0;
+        }
+        table {
+            width: 90%;
+            margin: 0 auto 2rem;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2e7d32;
+            color: white;
+        }
+        form button {
+            background-color: #388e3c;
+            border: none;
+            padding: 0.5rem 1rem;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #2e7d32;
+        }
+        a {
+            display: block;
+            width: fit-content;
+            margin: 0 auto 2rem;
+            padding: 0.6rem 1.2rem;
+            background-color: #2e7d32;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+        a:hover {
+            background-color: #1b5e20;
+        }
+    </style>
+</head>
+<body>
+
+<h1>All Orders</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Order ID</th>
+        <th>User</th>
+        <th>Total Amount</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${orders}">
+        <td th:text="${order.orderId}">1</td>
+        <td th:text="${order.user.name}">User Name</td>
+        <td th:text="${order.totalAmount}">100.00</td>
+        <td th:text="${order.status}">PENDING</td>
+        <td>
+            <form th:action="@{'/admin/orders/confirm/' + ${order.orderId}}" method="post" th:if="${order.status.name() == 'PENDING'}">
+                <button type="submit">Confirm</button>
+            </form>
+            <span th:if="${order.status.name() != 'PENDING'}">Confirmed</span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="/admin">Back to Admin Dashboard</a>
+
+</body>
+</html>

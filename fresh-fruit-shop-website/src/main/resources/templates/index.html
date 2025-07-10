@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fresh Fruit Shop - Quality Fruits Delivered</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+        /* Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0; padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f9fafb;
+            color: #2f4f2f;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar top */
+        nav {
+            background-color: #f0f0f0;
+            padding: 0.7rem 2rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            font-weight: 600;
+            box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+        }
+        nav a {
+            color: #2e7d32;
+            text-decoration: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        nav a:hover {
+            background-color: #2e7d32;
+            color: white;
+        }
+
+        header {
+            background-color: #2e7d32;
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        main {
+            flex-grow: 1;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            justify-content: space-between;
+            background: #d0f0c0;
+            padding: 2rem;
+            border-radius: 12px;
+            flex-wrap: wrap;
+        }
+        .hero-text {
+            flex: 1 1 300px;
+        }
+        .hero-text h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            color: #1b5e20;
+        }
+        .hero-text p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: #355e35;
+        }
+        .btn-shop {
+            background-color: #2e7d32;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+        .btn-shop:hover {
+            background-color: #1b3d19;
+        }
+        .hero-image {
+            flex: 1 1 300px;
+            text-align: center;
+        }
+        .hero-image img {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* Products Grid */
+        .products {
+            margin-top: 3rem;
+        }
+        .products h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #2e7d32;
+            text-align: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .product-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+        }
+        .product-name {
+            font-weight: 700;
+            color: #1b5e20;
+            margin-bottom: 0.3rem;
+        }
+        .product-category {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        .product-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #388e3c;
+            margin-bottom: 0.6rem;
+        }
+        .product-desc {
+            flex-grow: 1;
+            font-size: 0.9rem;
+            color: #444;
+            margin-bottom: 1rem;
+        }
+        .btn-add {
+            background-color: #388e3c;
+            color: white;
+            border: none;
+            padding: 0.6rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+        .btn-add:disabled {
+            background-color: #a5d6a7;
+            cursor: not-allowed;
+        }
+        .btn-add:hover:not(:disabled) {
+            background-color: #2e7d32;
+        }
+        .stock-label {
+            color: #d32f2f;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #2e7d32;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero-text, .hero-image {
+                flex: unset;
+            }
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/login" th:href="@{/login}">Login</a>
+    <a href="/register" th:href="@{/register}">Register</a>
+</nav>
+
+<header>
+    Fresh Fruit Shop
+</header>
+
+<main>
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Fresh Fruits Delivered to Your Doorstep</h1>
+            <p>Enjoy the freshest selection of seasonal fruits straight from local farms.</p>
+            <a href="#" th:href="@{/dashboard}" class="btn-shop">Shop Now <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="hero-image">
+            <img src="/images/hero-fruits.jpg" alt="Basket of fresh fruits" />
+        </div>
+    </section>
+
+    <!-- Products -->
+    <section class="products">
+        <h2 th:text="${selectedCategory != null ? selectedCategory + ' Fruits' : 'All Fruits'}">All Fruits</h2>
+
+        <div th:if="${fruits.empty}">
+            <p style="text-align:center; color:#666; font-size:1.1rem;">No fruits available right now. Please check back later.</p>
+        </div>
+
+        <div class="grid" th:unless="${fruits.empty}">
+            <div class="product-card" th:each="fruit : ${fruits}">
+                <img th:src="${fruit.imageUrl}" th:alt="${fruit.name}" />
+                <div>
+                    <div class="product-name" th:text="${fruit.name}">Fruit Name</div>
+                    <div class="product-category" th:text="${fruit.category}">Category</div>
+                    <div class="product-price" th:text="'$' + ${fruit.price}">Price</div>
+                    <p class="product-desc" th:text="${fruit.description}">Fruit description here</p>
+                </div>
+                <form th:action="@{/cart/add/{id}(id=${fruit.id})}" method="post">
+                    <button class="btn-add" type="submit" th:disabled="${!fruit.inStock}">
+                        <i class="fas fa-cart-plus"></i> Add to Cart
+                    </button>
+                </form>
+                <div class="stock-label" th:if="${!fruit.inStock}">Out of Stock</div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    &copy; 2025 Fresh Fruit Shop. All rights reserved.
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: html}">
+<head>
+  <title>User Dashboard</title>
+</head>
+<body>
+<main th:fragment="content">
+  <div class="main-content">
+    <h2>Welcome to Your Dashboard</h2>
+    <div class="product-grid">
+      <div th:each="fruit : ${fruits}" class="product-card">
+        <img th:src="${fruit.imageUrl}" th:alt="${fruit.name}" class="product-image">
+
+        <div class="product-info">
+          <h3 th:text="${fruit.name}">Fruit Name</h3>
+          <p th:text="${fruit.description}">Fruit description...</p>
+          <span th:text="'$' + ${fruit.price}">Price</span>
+
+          <form th:action="@{/dashboard/cart/add/{id}(id=${fruit.id})}" method="post">
+            <button type="submit" class="btn btn-primary">Add to Cart</button>
+          </form>
+
+          <form th:action="@{/dashboard/favorites/{id}(id=${fruit.id})}" method="post" style="margin-top: 0.5rem;">
+            <button type="submit" class="btn btn-secondary"
+                    th:text="${#lists.contains(userFavorites, fruit) ? 'Remove Favorite' : 'Add to Favorites'}">
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

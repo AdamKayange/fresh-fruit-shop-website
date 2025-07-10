@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: html}">
+<head>
+    <title>Edit Fruit</title>
+</head>
+<body>
+<main th:fragment="content">
+    <div class="form-container">
+        <h2>Edit Fruit</h2>
+        <form th:action="@{/admin/fruits/edit/{id}(id=${fruit.id})}" th:object="${fruit}" method="post">
+            <label>Name: <input type="text" th:field="*{name}" required></label><br>
+            <label>Price: <input type="number" step="0.01" th:field="*{price}" required></label><br>
+            <label>Image URL: <input type="text" th:field="*{imageUrl}"></label><br>
+            <label>Description: <textarea th:field="*{description}"></textarea></label><br>
+            <label>Category: <input type="text" th:field="*{category}"></label><br>
+            <label>In Stock: <input type="checkbox" th:field="*{inStock}"></label><br>
+            <label>Quantity: <input type="number" th:field="*{quantity}"></label><br>
+            <button type="submit" class="btn btn-primary">Update Fruit</button>
+        </form>
+    </div>
+</main>
+</body>
+</html>

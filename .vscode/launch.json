@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-FreshFruitShopWebsiteApplication<fresh-fruit-shop-website>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.fresh_fruit_shop_website.FreshFruitShopWebsiteApplication",
+            "projectName": "fresh-fruit-shop-website",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

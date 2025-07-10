@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>My Orders - Fresh Fruit Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            background: #f9fafb;
+            color: #2f4f2f;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #1b5e20;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+        th {
+            background-color: #2e7d32;
+            color: white;
+            font-weight: 600;
+        }
+        .status-pending {
+            color: orange;
+            font-weight: bold;
+        }
+        .status-completed {
+            color: green;
+            font-weight: bold;
+        }
+        .status-cancelled {
+            color: red;
+            font-weight: bold;
+        }
+        a.back-link {
+            display: block;
+            text-align: center;
+            margin-top: 2rem;
+            color: #2e7d32;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        a.back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<h1>My Orders</h1>
+
+<div th:if="${#lists.isEmpty(orders)}">
+    <p>You have no orders yet. <a href="/home">Start shopping now!</a></p>
+</div>
+
+<div th:unless="${#lists.isEmpty(orders)}">
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Created At</th>
+                <th>Shipping Name</th>
+                <th>Shipping Address</th>
+                <th>City</th>
+                <th>Phone</th>
+                <th>Zipcode</th>
+                <th>Status</th>
+                <th>Total Amount (Tsh)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="order : ${orders}">
+                <td th:text="${order.orderId}">1</td>
+                <td th:text="${#dates.format(order.createdAt, 'dd MMM yyyy HH:mm')}">2025-06-23 12:00</td>
+                <td th:text="${order.shippingName}">John Doe</td>
+                <td th:text="${order.shippingAddress}">123 Street</td>
+                <td th:text="${order.shippingCity}">Dar es Salaam</td>
+                <td th:text="${order.shippingPhone}">+255 123 456789</td>
+                <td th:text="${order.shippingZipcode}">14100</td>
+                <td>
+                    <span th:switch="${order.status}">
+                        <span th:case="'PENDING'" class="status-pending">Pending</span>
+                        <span th:case="'COMPLETED'" class="status-completed">Completed</span>
+                        <span th:case="'CANCELLED'" class="status-cancelled">Cancelled</span>
+                        <span th:case="*">Unknown</span>
+                    </span>
+                </td>
+                <td th:text="${#numbers.formatDecimal(order.totalAmount, 0, 'POINT', 2, 'COMMA')}">0.00</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<a href="/home" class="back-link"><i class="fas fa-arrow-left"></i> Back to Shop</a>
+
+</body>
+</html>

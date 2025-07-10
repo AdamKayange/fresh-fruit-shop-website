@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: html}">
+<head>
+    <title>Order Confirmation - Fresh Fruit Shop</title>
+</head>
+<body>
+<main th:fragment="content">
+    <div class="main-content" style="max-width: 800px;">
+        <div class="form-card text-center">
+            <div style="color: var(--primary-green); font-size: 4rem; margin-bottom: 1rem;">
+                <i class="fas fa-check-circle"></i>
+            </div>
+
+            <h1 class="form-title" style="color: var(--primary-green);">Order Confirmed!</h1>
+            <p class="form-subtitle" style="margin-bottom: 2rem;">
+                Thank you for your order. We'll start preparing your fresh fruits right away!
+            </p>
+
+            <div style="background: var(--bg-light); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem;">
+                <h3 style="margin-top: 0;">Order Details</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; text-align: left;">
+                    <div>
+                        <strong>Order ID:</strong> #<span th:text="${order.id}">12345</span>
+                    </div>
+                    <div>
+                        <strong>Status:</strong>
+                        <span style="color: var(--secondary-orange); font-weight: 600;" th:text="${order.status}">PENDING</span>
+                    </div>
+                    <div>
+                        <strong>Total:</strong>
+                        <span style="color: var(--primary-green); font-weight: 600;" th:text="'$' + ${order.total}">$0.00</span>
+                    </div>
+                    <div>
+                        <strong>Order Date:</strong>
+                        <span th:text="${#temporals.format(order.createdAt, 'MMM dd, yyyy')}">Jan 01, 2024</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: var(--bg-light); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem; text-align: left;">
+                <h3 style="margin-top: 0;">Delivery Address</h3>
+                <p style="margin: 0;">
+                    <span th:text="${order.deliveryAddress}">123 Main St</span><br>
+                    <span th:text="${order.deliveryCity}">City</span>, <span th:text="${order.deliveryZipCode}">12345</span><br>
+                    <strong>Phone:</strong> <span th:text="${order.phoneNumber}">123-456-7890</span>
+                </p>
+            </div>
+
+            <div style="background: var(--bg-light); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem;">
+                <h3 style="margin-top: 0;">Order Items</h3>
+                <div th:each="item : ${order.orderItems}"
+                     style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid var(--border-light);">
+                    <div style="text-align: left;">
+                        <strong th:text="${item.fruit.name}">Fruit Name</strong><br>
+                        <small style="color: var(--text-light);">
+                            Qty: <span th:text="${item.quantity}">1</span> × $<span th:text="${item.price}">0.00</span>
+                        </small>
+                    </div>
+                    <div style="font-weight: 600;" th:text="'$' + ${item.subtotal}">$0.00</div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a th:href="@{/orders/my-orders}" class="btn btn-primary">
+                    <i class="fas fa-list"></i>
+                    View All Orders
+                </a>
+                <a th:href="@{/}" class="btn btn-secondary">
+                    <i class="fas fa-home"></i>
+                    Continue Shopping
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

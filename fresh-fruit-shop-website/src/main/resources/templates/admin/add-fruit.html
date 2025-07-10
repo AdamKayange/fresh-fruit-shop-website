@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Add New Fruit - Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" 
+        rel="stylesheet" 
+        integrity="sha512-pb3A+Vq+gE6YV3mQD53VQ+e3RfxeYBhsY8XKqBjEYwXzYwVgSGmXD+O1IomgBzjNTmEcfzEst2bxyjYjzY2Gng==" 
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        nav {
+            background-color: #2e7d32;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2e7d32;
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            margin-top: 1rem;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 0.7rem;
+            margin-top: 0.3rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        input[type="checkbox"] {
+            margin-top: 0.5rem;
+            transform: scale(1.2);
+        }
+
+        button {
+            margin-top: 2rem;
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #2e7d32;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1b5e20;
+        }
+
+        a.back-link {
+            display: inline-block;
+            margin-top: 1rem;
+            text-decoration: none;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        a.back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div><strong>Fresh Fruit Shop Admin</strong></div>
+    <div><a href="/admin/dashboard" style="color:white; text-decoration:none;">Dashboard</a></div>
+</nav>
+
+<div class="container">
+    <h2>Add New Fruit</h2>
+
+    <form th:action="@{/admin/fruits/add}" th:object="${fruit}" method="post">
+        <label for="name">Name:</label>
+        <input type="text" th:field="*{name}" id="name" required>
+
+        <label for="price">Price:</label>
+        <input type="number" step="0.01" th:field="*{price}" id="price" required>
+
+        <label for="imageUrl">Image URL:</label>
+        <input type="text" th:field="*{imageUrl}" id="imageUrl">
+
+        <label for="description">Description:</label>
+        <textarea th:field="*{description}" id="description"></textarea>
+
+        <label for="category">Category:</label>
+        <input type="text" th:field="*{category}" id="category">
+
+        <label>
+            <input type="checkbox" th:field="*{inStock}">
+            In Stock
+        </label>
+
+        <label for="quantity">Quantity:</label>
+        <input type="number" th:field="*{quantity}" id="quantity">
+
+        <button type="submit"><i class="fas fa-plus-circle"></i> Save Fruit</button>
+    </form>
+
+    <a href="/admin/fruits" class="back-link"><i class="fas fa-arrow-left"></i> Back to Fruit List</a>
+</div>
+
+</body>
+</html>

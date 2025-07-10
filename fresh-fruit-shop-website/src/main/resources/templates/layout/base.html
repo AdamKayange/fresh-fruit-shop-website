@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title != null ? title + ' - Fresh Fruit Shop' : 'Fresh Fruit Shop - Fresh Fruits Delivered'}">Fresh Fruit Shop</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<!-- Header -->
+<header class="header">
+    <div class="header-container">
+        <a th:href="@{/}" class="logo">
+            <div class="logo-icon">🍓</div>
+            <span class="logo-text">Fresh Fruits</span>
+        </a>
+
+        <div class="search-container">
+            <form th:action="@{/}" method="get" style="position: relative;">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" name="search" th:value="${searchQuery}"
+                       placeholder="Search fresh fruits..." class="search-input">
+            </form>
+        </div>
+
+        <nav class="nav-links">
+            <!-- Cart Button with dynamic count -->
+            <a th:href="@{/cart}" class="cart-btn">
+                <i class="fas fa-shopping-cart" style="font-size: 1.25rem;"></i>
+                <span th:if="${cartItemCount > 0}" class="cart-count" th:text="${cartItemCount}"></span>
+            </a>
+
+            <!-- User Auth Links -->
+            <div sec:authorize="isAuthenticated()">
+                <span class="text-sm" style="margin-right: 1rem;">
+                    Hello, <span sec:authentication="name"></span>!
+                </span>
+                <a th:href="@{/orders/my-orders}" class="btn btn-secondary">My Orders</a>
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="btn btn-secondary">Logout</button>
+                </form>
+            </div>
+
+            <div sec:authorize="isAnonymous()">
+                <a th:href="@{/login}" class="btn btn-primary">
+                    <i class="fas fa-user"></i>
+                    Login
+                </a>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<!-- Flash Messages -->
+<div class="main-content" style="margin-top: 1rem;">
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+    <div th:if="${info}" class="alert alert-info" th:text="${info}"></div>
+</div>
+
+<!-- Main Content -->
+<main th:fragment="content">
+    <!-- Content will be inserted here -->
+</main>
+
+<!-- Footer -->
+<footer style="background: var(--white); margin-top: 4rem; padding: 2rem 0; border-top: 1px solid var(--border-light);">
+    <div class="main-content text-center">
+        <p style="color: var(--text-light);">
+            &copy; 2024 Fresh Fruit Shop. All rights reserved. |
+            <a th:href="@{/}" style="color: var(--primary-green);">Home</a> |
+            <a th:href="@{/cart}" style="color: var(--primary-green);">Cart</a>
+        </p>
+    </div>
+</footer>
+
+<script>
+    // Simple cart update functionality
+    function updateQuantity(fruitId, change) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/cart/update/' + fruitId;
+
+        const quantityInput = document.querySelector(`input[data-fruit-id="${fruitId}"]`);
+        const currentQuantity = parseInt(quantityInput.value);
+        const newQuantity = Math.max(0, currentQuantity + change);
+
+        const hiddenInput = document.createElement('input');
+        hiddenInput.type = 'hidden';
+        hiddenInput.name = 'quantity';
+        hiddenInput.value = newQuantity;
+
+        form.appendChild(hiddenInput);
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    // Auto-submit search form with delay
+    let searchTimeout;
+    const searchInput = document.querySelector('input[name="search"]');
+    if (searchInput) {
+        searchInput.addEventListener('input', function () {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                this.form.submit();
+            }, 500);
+        });
+    }
+</script>
+</body>
+</html>

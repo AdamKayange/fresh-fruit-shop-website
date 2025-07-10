@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fresh Fruit Shop - Home</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    /* Styles unchanged from your original */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background: #f9fafb;
+      color: #2f4f2f;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    nav {
+      background-color: #2e7d32;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      flex-wrap: wrap; /* ✅ Added to support wrapping on smaller screens */
+    }
+    nav .brand {
+      font-weight: bold;
+      font-size: 1.6rem;
+    }
+    nav .nav-links {
+      display: flex; /* ✅ Added */
+      align-items: center; /* ✅ Added */
+      gap: 1rem; /* ✅ Added spacing between links */
+    }
+    nav .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    nav .nav-links a:hover {
+      text-decoration: underline;
+    }
+    nav .nav-links form {
+      display: inline;
+      margin-left: 1.5rem;
+    }
+    nav .nav-links button {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 600;
+    }
+
+    .banner {
+      width: 100%;
+      height: 300px;
+      overflow: hidden;
+      position: relative; /* ✅ Added to allow positioning text inside */
+    }
+    .banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .banner-text { /* ✅ Added animated text styles */
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(46, 125, 50, 0.7);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-size: 1.8rem;
+      font-weight: bold;
+      animation: fadeSlide 3s ease-in-out infinite alternate;
+      text-align: center;
+    }
+
+    @keyframes fadeSlide { /* ✅ Animation effect */
+      0% { opacity: 0; transform: translate(-50%, -60%); }
+      100% { opacity: 1; transform: translate(-50%, -50%); }
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      flex-grow: 1;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #1b5e20;
+    }
+    .categories {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-bottom: 2rem;
+    }
+    .categories form button {
+      background-color: #e0f2f1;
+      color: #2e7d32;
+      border: 2px solid #2e7d32;
+      border-radius: 6px;
+      padding: 0.4rem 1rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .categories form button:hover {
+      background-color: #2e7d32;
+      color: white;
+    }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+    .product-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .product-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .product-details {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    .product-name {
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: #1b5e20;
+    }
+    .product-category {
+      font-size: 0.9rem;
+      color: #777;
+    }
+    .product-price {
+      font-size: 1rem;
+      margin: 0.5rem 0;
+      color: #388e3c;
+    }
+    .product-actions {
+      margin-top: auto;
+      display: flex;
+      gap: 0.5rem;
+    }
+    .product-actions button {
+      flex: 1;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 5px;
+      font-weight: 600;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+    .add-cart {
+      background-color: #388e3c;
+    }
+    .add-cart:hover {
+      background-color: #2e7d32;
+    }
+    .add-fav {
+      background-color: #f44336;
+    }
+    .add-fav:hover {
+      background-color: #c62828;
+    }
+    footer {
+      background-color: #2e7d32;
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .nav-links {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+      .product-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav>
+  <div class="brand">Fresh Fruit Shop</div>
+  <div class="nav-links">
+    <a href="/cart"><i class="fas fa-shopping-cart"></i> Cart</a>
+    <a href="/favorites"><i class="fas fa-heart"></i> Favorites</a>
+    <a href="/orders/my-orders"><i class="fas fa-box"></i> Orders</a>
+
+    <form th:action="@{/logout}" method="post">
+      <button type="submit"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </form>
+  </div>
+</nav>
+
+<!-- Banner -->
+<div class="banner">
+  <img id="bannerImage" src="/images/apples.jpg" alt="Fruit Banner">
+  <!-- ✅ Added banner text -->
+  <div class="banner-text">Fresh Fruits Delivered to Your Doorstep</div>
+</div>
+
+<!-- Main Content -->
+<main>
+  <h2>Welcome to Fresh Fruit Shop</h2>
+
+  <!-- Category Filter -->
+  <div class="categories">
+    <form th:action="@{/home}" method="get">
+      <button type="submit" name="category" value="">All</button>
+    </form>
+    <form th:each="cat : ${categories}" th:action="@{/home}" method="get">
+      <button type="submit" name="category" th:value="${cat}" th:text="${cat}">Category</button>
+    </form>
+  </div>
+
+  <!-- Product Grid -->
+  <div class="products">
+    <div class="product-card" th:each="fruit : ${fruits}">
+      <img th:src="@{~/images/{filename}(filename=${fruit.imageUrl})}" th:alt="${fruit.name}" />
+
+      <div class="product-details">
+        <div class="product-name" th:text="${fruit.name}">Fruit Name</div>
+        <div class="product-category" th:text="${fruit.category}">Category</div>
+        <div class="product-price">Tsh <span th:text="${fruit.price}">0.00</span></div>
+        <div class="product-actions">
+          <form th:action="@{/cart/add/{id}(id=${fruit.fruitId})}" method="post" th:object="${fruit}">
+            <button type="submit" class="add-cart"><i class="fas fa-cart-plus"></i> Add</button>
+          </form>
+          <form th:action="@{/favorites/toggle/{fruitId}(fruitId=${fruit.fruitId})}"  method="post" th:object="${fruit}">
+            <button type="submit" class="add-fav"><i class="fas fa-heart"></i> Favorite</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer>
+  &copy; 2025 Fresh Fruit Shop. All rights reserved.
+</footer>
+
+<!-- Auto-scroll Banner Script -->
+<script>
+  const images = [
+    '/images/apples.jpg',
+    '/images/bananas.jpg',
+    '/images/oranges.jpg',
+    '/images/avocados.jpg'
+  ];
+  let index = 0;
+  const banner = document.getElementById('bannerImage');
+  setInterval(() => {
+    index = (index + 1) % images.length;
+    banner.style.opacity = 0;
+    setTimeout(() => {
+      banner.src = images[index];
+      banner.style.opacity = 1;
+    }, 300);
+  }, 4000);
+</script>
+
+</body>
+</html>

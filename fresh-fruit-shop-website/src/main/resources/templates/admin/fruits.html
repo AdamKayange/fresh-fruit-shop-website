@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard - Fruits</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    .grid-links {
+      display: flex;
+      justify-content: space-around;
+      margin: 30px 0;
+    }
+    .grid-links a {
+      flex: 1;
+      margin: 0 10px;
+      padding: 25px;
+      text-align: center;
+      text-decoration: none;
+      color: white;
+      background-color: #2e7d32;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      transition: background-color 0.3s ease;
+    }
+    .grid-links a:hover {
+      background-color: #1b5e20;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== Admin Navbar ===== -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Admin Dashboard</a>
+    <div class="d-flex">
+      <span class="navbar-text text-white me-3">
+        Welcome, <strong th:text="${#authentication.name}">Admin</strong>
+      </span>
+      <a class="btn btn-outline-light" href="/logout">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </a>
+    </div>
+  </div>
+</nav>
+
+  <!-- ===== Fruit Table ===== -->
+  <h3 class="text-success mb-3">All Fruits</h3>
+  <table class="table table-bordered table-striped">
+    <thead class="table-success">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Price (TZS)</th>
+        <th>Category</th>
+        <th>Image</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="fruit : ${fruits}">
+        <td th:text="${fruit.fruitId}">1</td>
+        <td th:text="${fruit.name}">Banana</td>
+        <td th:text="${fruit.price}">1200</td>
+        <td th:text="${fruit.category}">Tropical</td>
+        <td>
+          <img th:src="${fruit.imageUrl}" alt="fruit image" width="60" height="60" class="rounded">
+        </td>
+        <td>
+          <a th:href="@{'/admin/fruits/edit/' + ${fruit.fruitId}}" class="btn btn-primary btn-sm">Edit</a>
+          <a th:href="@{'/admin/fruits/delete/' + ${fruit.fruitId}}" class="btn btn-danger btn-sm"
+             onclick="return confirm('Are you sure you want to delete this fruit?')">Delete</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

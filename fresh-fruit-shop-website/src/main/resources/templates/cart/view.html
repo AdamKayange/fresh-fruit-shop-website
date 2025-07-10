@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: html}">
+<head>
+  <title>Shopping Cart - Fresh Fruit Shop</title>
+</head>
+<body>
+<main th:fragment="content">
+  <div class="cart-container">
+    <div class="cart-header">
+      <h1 class="section-title">
+        <i class="fas fa-shopping-cart" style="margin-right: 0.5rem;"></i>
+        Shopping Cart
+      </h1>
+    </div>
+
+    <div th:if="${cartItems.empty}" class="empty-state">
+      <div class="empty-state-icon">🛒</div>
+      <h3 class="empty-state-title">Your cart is empty</h3>
+      <p class="empty-state-text">Add some delicious fruits to get started!</p>
+      <a th:href="@{/}" class="btn btn-primary" style="margin-top: 1rem;">
+        <i class="fas fa-arrow-left"></i>
+        Continue Shopping
+      </a>
+    </div>
+
+    <div th:unless="${cartItems.empty}">
+      <div class="cart-items">
+        <div th:each="item : ${cartItems}" class="cart-item">
+          <img th:src="${item.imageUrl}" th:alt="${item.fruitName}" class="cart-item-image">
+
+          <div class="cart-item-info">
+            <h3 class="cart-item-name" th:text="${item.fruitName}">Fruit Name</h3>
+            <p class="cart-item-price" th:text="'$' + ${item.price} + ' ' + ${item.unit}">$0.00 per unit</p>
+          </div>
+
+          <div class="quantity-controls">
+            <button type="button" class="quantity-btn" th:onclick="'updateQuantity(' + ${item.fruitId} + ', -1)'">
+              <i class="fas fa-minus"></i>
+            </button>
+            <input type="number" th:value="${item.quantity}"
+                   th:data-fruit-id="${item.fruitId}"
+                   class="quantity-input" readonly>
+            <button type="button" class="quantity-btn" th:onclick="'updateQuantity(' + ${item.fruitId} + ', 1)'">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+
+          <div style="text-align: right; min-width: 80px;">
+            <div style="font-weight: 600; font-size: 1.1rem;" th:text="'$' + ${item.subtotal}">$0.00</div>
+          </div>
+
+          <form th:action="@{/cart/remove/{id}(id=${item.fruitId})}" method="post">
+            <button type="submit" class="remove-btn">
+              <i class="fas fa-trash"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="cart-summary">
+        <div class="cart-total">
+          <span>Total:</span>
+          <span class="total-amount" th:text="'$' + ${cartTotal}">$0.00</span>
+        </div>
+
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <a th:href="@{/orders/checkout}" class="btn btn-primary" style="flex: 1;">
+            <i class="fas fa-credit-card"></i>
+            Proceed to Checkout
+          </a>
+
+          <form th:action="@{/cart/clear}" method="post" style="flex: 1;">
+            <button type="submit" class="btn btn-secondary w-full"
+                    onclick="return confirm('Are you sure you want to clear your cart?')">
+              <i class="fas fa-trash"></i>
+              Clear Cart
+            </button>
+          </form>
+        </div>
+
+        <div style="text-align: center; margin-top: 1rem;">
+          <a th:href="@{/}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i>
+            Continue Shopping
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>

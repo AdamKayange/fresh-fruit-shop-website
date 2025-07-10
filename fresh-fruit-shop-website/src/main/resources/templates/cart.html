@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Your Cart - Fresh Fruit Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9fafb;
+            color: #2f4f2f;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #1b5e20;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 0.75rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background-color: #2e7d32;
+            color: white;
+            font-weight: 600;
+        }
+        td img {
+            max-width: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        .quantity-control {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .quantity-control button {
+            background-color: #388e3c;
+            border: none;
+            color: white;
+            font-size: 1.1rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .quantity-control button:hover {
+            background-color: #2e7d32;
+        }
+        .quantity-display {
+            min-width: 30px;
+            font-weight: 600;
+        }
+        .actions form {
+            display: inline-block;
+            margin: 0 0.2rem;
+        }
+        button.remove {
+            background-color: #f44336;
+            padding: 0.4rem 0.8rem;
+        }
+        button.remove:hover {
+            background-color: #c62828;
+        }
+        .clear-cart, .proceed-checkout {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            margin-top: 1rem;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .clear-cart {
+            background-color: #c62828;
+        }
+        .clear-cart:hover {
+            background-color: #9b1c1c;
+        }
+        .proceed-checkout {
+            background-color: #2e7d32;
+            margin-top: 0.5rem;
+        }
+        .proceed-checkout:hover {
+            background-color: #255d24;
+        }
+        .empty-cart-msg {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 1.2rem;
+        }
+        .empty-cart-msg a {
+            color: #2e7d32;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .empty-cart-msg a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Your Shopping Cart</h1>
+
+<div th:if="${#lists.isEmpty(cartItems)}" class="empty-cart-msg">
+    <p>Your cart is empty. <a href="/home">Go back to shop</a></p>
+</div>
+
+<div th:unless="${#lists.isEmpty(cartItems)}">
+    <table>
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Fruit</th>
+                <th>Price (Tsh)</th>
+                <th>Quantity</th>
+                <th>Subtotal (Tsh)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item : ${cartItems}">
+                <td><img th:src="@{~/images/{filename}(filename=${item.fruit.imageUrl})}" th:alt="${item.fruit.name}" /></td>
+                <td th:text="${item.fruit.name}">Fruit Name</td>
+                <td th:text="${#numbers.formatDecimal(item.fruit.price, 0, 'POINT', 2, 'COMMA')}">0.00</td>
+                <td>
+                    <div class="quantity-control">
+                        <form th:action="@{/cart/update/{id}(id=${item.fruit.fruitId})}" method="post" style="margin:0;">
+                            <input type="hidden" name="change" value="-1"/>
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <button type="submit" title="Decrease quantity"><i class="fas fa-minus"></i></button>
+                        </form>
+
+                        <div class="quantity-display" th:text="${item.quantity}">1</div>
+
+                        <form th:action="@{/cart/update/{id}(id=${item.fruit.fruitId})}" method="post" style="margin:0;">
+                            <input type="hidden" name="change" value="1"/>
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <button type="submit" title="Increase quantity"><i class="fas fa-plus"></i></button>
+                        </form>
+                    </div>
+                </td>
+                <td th:text="${#numbers.formatDecimal(item.fruit.price * item.quantity, 0, 'POINT', 2, 'COMMA')}">0.00</td>
+                <td class="actions">
+                    <form th:action="@{/cart/remove/{id}(id=${item.fruit.fruitId})}" method="post" style="display:inline;">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <button type="submit" class="remove" title="Remove item"><i class="fas fa-trash"></i></button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <form th:action="@{/cart/clear}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <button type="submit" class="clear-cart">Clear Cart</button>
+    </form>
+
+    <form th:action="@{/checkout}" method="get">
+        <button type="submit" class="proceed-checkout">Proceed to Checkout</button>
+    </form>
+</div>
+
+</body>
+</html>

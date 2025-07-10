@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: html}">
+<head>
+    <title>My Orders - Fresh Fruit Shop</title>
+</head>
+<body>
+<main th:fragment="content">
+    <div class="main-content">
+        <div class="cart-header">
+            <h1 class="section-title">
+                <i class="fas fa-list" style="margin-right: 0.5rem;"></i>
+                My Orders
+            </h1>
+        </div>
+
+        <div th:if="${orders.empty}" class="empty-state">
+            <div class="empty-state-icon">📦</div>
+            <h3 class="empty-state-title">No orders yet</h3>
+            <p class="empty-state-text">Start shopping to see your orders here!</p>
+            <a th:href="@{/}" class="btn btn-primary" style="margin-top: 1rem;">
+                <i class="fas fa-shopping-cart"></i>
+                Start Shopping
+            </a>
+        </div>
+
+        <div th:unless="${orders.empty}" style="display: grid; gap: 1.5rem;">
+            <div th:each="order : ${orders}" class="cart-items">
+                <div style="padding: 1.5rem; border-bottom: 1px solid var(--border-light);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <div>
+                            <h3 style="margin: 0; font-size: 1.25rem;">
+                                Order #<span th:text="${order.id}">12345</span>
+                            </h3>
+                            <p style="margin: 0; color: var(--text-light);"
+                               th:text="${#temporals.format(order.createdAt, 'MMM dd, yyyy HH:mm')}">Jan 01, 2024 10:30</p>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 1.25rem; font-weight: 700; color: var(--primary-green);"
+                                 th:text="'$' + ${order.total}">$0.00</div>
+                            <div style="font-size: 0.875rem; font-weight: 600; padding: 0.25rem 0.75rem; border-radius: 1rem;"
+                                 th:classappend="${order.status == 'PENDING'} ? 'alert-info' : (${order.status == 'CONFIRMED'} ? 'alert-success' : 'alert-error')"
+                                 th:text="${order.status}">STATUS</div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; gap: 0.5rem;">
+                        <div th:each="item : ${order.orderItems}"
+                             style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0;">
+                            <div>
+                                <span th:text="${item.fruit.name}">Fruit Name</span>
+                                <small style="color: var(--text-light); margin-left: 0.5rem;">
+                                    × <span th:text="${item.quantity}">1</span>
+                                </small>
+                            </div>
+                            <div th:text="'$' + ${item.subtotal}">$0.00</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-light);">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="color: var(--text-light); font-size: 0.875rem;">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span th:text="${order.deliveryAddress + ', ' + order.deliveryCity}">Address</span>
+                            </div>
+                            <a th:href="@{/orders/{id}(id=${order.id})}" class="btn btn-secondary" style="padding: 0.5rem 1rem;">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 2rem;">
+            <a th:href="@{/}" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i>
+                Continue Shopping
+            </a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

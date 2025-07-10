@@ -1,0 +1,138 @@
+/* Hero Banner */
+.hero-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #e0f7e9;
+    padding: 3rem 2rem;
+    gap: 2rem;
+}
+
+.hero-text {
+    max-width: 50%;
+}
+
+.hero-text h1 {
+    font-size: 2.8rem;
+    color: #2e7d32;
+    margin-bottom: 1rem;
+}
+
+.hero-text p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    color: #4a4a4a;
+}
+
+.btn-primary {
+    background-color: #2e7d32;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.hero-image img {
+    width: 350px;
+    border-radius: 12px;
+}
+
+/* Product Listing */
+.product-listing {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.product-listing h2 {
+    font-size: 2rem;
+    color: #2e7d32;
+    margin-bottom: 1rem;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.product-card {
+    background: #ffffff;
+    box-shadow: 0 3px 6px rgb(0 0 0 / 0.1);
+    border-radius: 10px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 0.8rem;
+}
+
+.product-info h3 {
+    color: #1b5e20;
+    margin: 0.3rem 0;
+}
+
+.category {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.6rem;
+}
+
+.price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #388e3c;
+    margin-bottom: 0.6rem;
+}
+
+.description {
+    font-size: 0.9rem;
+    color: #444;
+    flex-grow: 1;
+    margin-bottom: 1rem;
+}
+
+.btn-add {
+    background-color: #388e3c;
+    color: white;
+    padding: 0.6rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-add:disabled {
+    background-color: #a5d6a7;
+    cursor: not-allowed;
+}
+
+.stock-status {
+    color: #d32f2f;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+/* Footer */
+.footer {
+    background-color: #2e7d32;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    margin-top: 3rem;
+}

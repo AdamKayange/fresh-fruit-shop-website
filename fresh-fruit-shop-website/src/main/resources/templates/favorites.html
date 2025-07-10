@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Your Favorites - Fresh Fruit Shop</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1100px;
+            margin: 2rem auto;
+            background: #f9fafb;
+            color: #2f4f2f;
+            padding: 0 1rem; /* ✅ Added padding for smaller screens */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #1b5e20;
+            font-size: 2rem;
+        }
+
+        .favorites-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* ✅ Improved sizing */
+            gap: 1.5rem;
+        }
+
+        .favorite-card {
+            background: white;
+            border-radius: 12px; /* ✅ Smoother corners */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .favorite-card:hover {
+            transform: translateY(-4px); /* ✅ Subtle hover effect */
+        }
+
+        .favorite-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .favorite-name {
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-bottom: 0.4rem;
+            color: #1b5e20;
+            text-align: center;
+        }
+
+        .favorite-price {
+            color: #388e3c;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
+        form {
+            flex: 1;
+        }
+
+        form button {
+            width: 100%;
+            background-color: #388e3c;
+            color: white;
+            border: none;
+            padding: 0.5rem 0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            transition: background-color 0.2s ease;
+        }
+
+        form button.remove {
+            background-color: #f44336;
+        }
+
+        form button:hover {
+            background-color: #2e7d32;
+        }
+
+        form button.remove:hover {
+            background-color: #c62828;
+        }
+
+        .empty-message {
+            text-align: center;
+            font-style: italic;
+            margin-top: 3rem;
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        .empty-message a {
+            color: #2e7d32;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .empty-message a:hover {
+            text-decoration: underline;
+        }
+
+        a.back-link {
+            display: block;
+            margin: 3rem auto 1rem;
+            text-align: center;
+            color: #2e7d32;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        a.back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Your Favorites</h1>
+
+<div th:if="${#lists.isEmpty(favorites)}" class="empty-message">
+    You have no favorite fruits yet. <a href="/home">Browse fruits</a>
+</div>
+
+<div th:unless="${#lists.isEmpty(favorites)}" class="favorites-list">
+    <div class="favorite-card" th:each="fruit : ${favorites}">
+        <img th:src="@{~/images/{filename}(filename=${fruit.imageUrl})}" th:alt="${fruit.name}" />
+        <div class="favorite-name" th:text="${fruit.name}">Fruit Name</div>
+        <div class="favorite-price">Tsh <span th:text="${fruit.price}">0.00</span></div>
+        <div class="buttons">
+            <form th:action="@{/cart/add/{id}(id=${fruit.fruitId})}" method="post">
+                <button type="submit" class="add-cart">
+                    <i class="fas fa-cart-plus"></i> Add to Cart
+                </button>
+            </form>
+            <form th:action="@{/favorites/remove/{id}(id=${fruit.fruitId})}" method="post">
+                <button type="submit" class="remove">
+                    <i class="fas fa-trash"></i> Remove
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<a href="/home" class="back-link">← Back to Home</a>
+
+</body>
+</html>
